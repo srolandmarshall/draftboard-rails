@@ -1,0 +1,12 @@
+{
+  "name": "app",
+  "private": "true",
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.1",
+    "esbuild": "^0.16.8",
+    "esbuild-rails": "^1.0.3"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets"
+  }
+}
