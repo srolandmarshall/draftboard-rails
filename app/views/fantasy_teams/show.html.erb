@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @fantasy_team %>
+
+<div>
+  <%= link_to "Edit this fantasy team", edit_fantasy_team_path(@fantasy_team) %> |
+  <%= link_to "Back to fantasy teams", fantasy_teams_path %>
+
+  <%= button_to "Destroy this fantasy team", @fantasy_team, method: :delete %>
+</div>

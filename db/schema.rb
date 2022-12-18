@@ -10,68 +10,82 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_221_218_165_439) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_18_170407) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'drafts', force: :cascade do |t|
-    t.string 'title'
-    t.date 'scheduled_date'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.integer 'fantasy_league_id'
+  create_table "drafts", force: :cascade do |t|
+    t.string "title"
+    t.date "scheduled_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "fantasy_league_id"
   end
 
-  create_table 'drafts_tables', force: :cascade do |t|
-    t.string 'title'
-    t.date 'scheduled_date'
-    t.bigint 'league_id'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['league_id'], name: 'index_drafts_tables_on_league_id'
+  create_table "drafts_tables", force: :cascade do |t|
+    t.string "title"
+    t.date "scheduled_date"
+    t.bigint "league_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["league_id"], name: "index_drafts_tables_on_league_id"
   end
 
-  create_table 'fantasy_leagues', force: :cascade do |t|
-    t.bigint 'draft_id'
-    t.string 'name'
-    t.text 'description'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['draft_id'], name: 'index_fantasy_leagues_on_draft_id'
+  create_table "fantasy_leagues", force: :cascade do |t|
+    t.bigint "draft_id"
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["draft_id"], name: "index_fantasy_leagues_on_draft_id"
   end
 
-  create_table 'fantasy_teams', force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "fantasy_teams", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'leagues_tables', force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "leagues_tables", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'players', force: :cascade do |t|
-    t.string 'first_name'
-    t.string 'last_name'
-    t.integer 'jersey'
-    t.string 'position'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.jsonb 'data'
+  create_table "players", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "jersey"
+    t.string "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "data"
+    t.bigint "team_id"
+    t.index ["team_id"], name: "index_players_on_team_id"
   end
 
-  create_table 'teams', force: :cascade do |t|
-    t.string 'location'
-    t.string 'team_name'
-    t.string 'abbreviation'
-    t.bigint 'players_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['players_id'], name: 'index_teams_on_players_id'
+  create_table "rosters", force: :cascade do |t|
+    t.bigint "fantasy_team_id", null: false
+    t.bigint "player_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fantasy_team_id"], name: "index_rosters_on_fantasy_team_id"
+    t.index ["player_id"], name: "index_rosters_on_player_id"
   end
 
-  add_foreign_key 'fantasy_leagues', 'drafts'
-  add_foreign_key 'teams', 'players', column: 'players_id'
+  create_table "teams", force: :cascade do |t|
+    t.string "location"
+    t.string "team_name"
+    t.string "abbreviation"
+    t.bigint "players_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["players_id"], name: "index_teams_on_players_id"
+  end
+
+  add_foreign_key "fantasy_leagues", "drafts"
+  add_foreign_key "players", "teams"
+  add_foreign_key "rosters", "fantasy_teams"
+  add_foreign_key "rosters", "players"
+  add_foreign_key "teams", "players", column: "players_id"
 end

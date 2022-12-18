@@ -1,0 +1,17 @@
+<%= form_with(model: fantasy_team) do |form| %>
+  <% if fantasy_team.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(fantasy_team.errors.count, "error") %> prohibited this fantasy_team from being saved:</h2>
+
+      <ul>
+        <% fantasy_team.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
