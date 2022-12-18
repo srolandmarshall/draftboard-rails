@@ -6,5 +6,8 @@
   <%= link_to "Edit this fantasy league", edit_fantasy_league_path(@fantasy_league) %> |
   <%= link_to "Back to fantasy leagues", fantasy_leagues_path %>
 
+  <%# button to new draft %>
+  <%= link_to "New draft", new_draft_path(league: @fantasy_league) %>
+
   <%= button_to "Destroy this fantasy league", @fantasy_league, method: :delete %>
 </div>

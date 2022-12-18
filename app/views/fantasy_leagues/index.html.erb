@@ -6,7 +6,7 @@
   <% @fantasy_leagues.each do |fantasy_league| %>
     <%= render fantasy_league %>
     <p>
-      <%= link_to "Show this fantasy league", fantasy_league %>
+      <%= link_to "Show #{fantasy_league.name}", fantasy_league %>
     </p>
   <% end %>
 </div>
