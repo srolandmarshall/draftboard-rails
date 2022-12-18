@@ -72,3 +72,7 @@ group :test do
 end
 
 gem "jsbundling-rails", "~> 1.1"
+
+gem "httparty", "~> 0.20.0"
+
+gem "omniauth-yahoo-oauth2", "~> 1.2"
