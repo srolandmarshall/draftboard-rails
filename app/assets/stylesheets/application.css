@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+
+ .current_pick {
+    background-color: #c8dd78;
+ }

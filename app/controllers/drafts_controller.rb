@@ -1,23 +1,30 @@
 class DraftsController < ApplicationController
-  before_action :set_draft, only: %i[ show edit update destroy ]
+  before_action :set_draft, only: %i[show edit update destroy start_draft]
 
   # GET /drafts or /drafts.json
   def index
     @drafts = Draft.all
   end
 
+  def start_draft
+    @draft.update(active: true)
+    redirect_to draft_path(@draft)
+  end
+
   # GET /drafts/1 or /drafts/1.json
   def show
+    @available_players = Player.not_drafted(@draft.id)
+    @draft_pick = DraftPick.new(draft_id: @draft.id)
   end
 
   # GET /drafts/new
   def new
     @draft = Draft.new
+    @fantasy_leagues = FantasyLeague.all
   end
 
   # GET /drafts/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /drafts or /drafts.json
   def create
@@ -25,7 +32,7 @@ class DraftsController < ApplicationController
 
     respond_to do |format|
       if @draft.save
-        format.html { redirect_to draft_url(@draft), notice: "Draft was successfully created." }
+        format.html { redirect_to draft_url(@draft), notice: 'Draft was successfully created.' }
         format.json { render :show, status: :created, location: @draft }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +45,7 @@ class DraftsController < ApplicationController
   def update
     respond_to do |format|
       if @draft.update(draft_params)
-        format.html { redirect_to draft_url(@draft), notice: "Draft was successfully updated." }
+        format.html { redirect_to draft_url(@draft), notice: 'Draft was successfully updated.' }
         format.json { render :show, status: :ok, location: @draft }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +59,20 @@ class DraftsController < ApplicationController
     @draft.destroy
 
     respond_to do |format|
-      format.html { redirect_to drafts_url, notice: "Draft was successfully destroyed." }
+      format.html { redirect_to drafts_url, notice: 'Draft was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_draft
-      @draft = Draft.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def draft_params
-      params.fetch(:draft, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_draft
+    @draft = Draft.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def draft_params
+    params.require(:draft).permit(*Draft.column_names(&:to_sym))
+  end
 end

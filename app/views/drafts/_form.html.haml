@@ -1,0 +1,23 @@
+%form{action: '/drafts', method: 'post'}
+  = token_tag(nil)
+  %div#draft_title
+    %label{for: 'draft_title'} Title:
+    %input{type: 'text', name: 'draft[title]', id: 'draft_title'}
+
+  %div#draft_scheduled_date
+    %label{for: 'draft_scheduled_date'} Scheduled Date:
+    %input{type: 'datetime-local', name: 'draft[scheduled_date]', id: 'draft_scheduled_date'}
+
+  %div#draft_fantasy_league_id
+    %label{for: 'draft_fantasy_league_id'} Fantasy League:
+    %select{name: 'draft[fantasy_league_id]', id: 'draft_fantasy_league_id'}
+      - @fantasy_leagues.each do |fantasy_league|
+        %option{value: fantasy_league.id}= fantasy_league.name
+
+  %div#draft_active
+    %label{for: 'draft_active'} Active:
+    %input{type: 'checkbox', name: 'draft[active]', id: 'draft_active'}
+
+  %div#submit
+    %input{type: 'submit', value: 'Create Draft'}
+    %a{href: '/drafts'} Cancel

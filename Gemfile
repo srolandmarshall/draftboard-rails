@@ -76,3 +76,7 @@ gem "jsbundling-rails", "~> 1.1"
 gem "httparty", "~> 0.20.0"
 
 gem "omniauth-yahoo-oauth2", "~> 1.2"
+
+gem "faker", "~> 3.0"
+
+gem "haml-rails", "~> 2.1"

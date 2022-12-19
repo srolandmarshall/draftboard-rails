@@ -10,16 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_19_004225) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_19_040536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "draft_picks", force: :cascade do |t|
+    t.bigint "draft_id", null: false
+    t.bigint "player_id", null: false
+    t.bigint "fantasy_team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "pick_number"
+    t.index ["draft_id"], name: "index_draft_picks_on_draft_id"
+    t.index ["fantasy_team_id"], name: "index_draft_picks_on_fantasy_team_id"
+    t.index ["player_id"], name: "index_draft_picks_on_player_id"
+  end
+
   create_table "drafts", force: :cascade do |t|
     t.string "title"
-    t.date "scheduled_date"
+    t.datetime "scheduled_date", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "fantasy_league_id"
+    t.boolean "active"
+    t.integer "current_pick", default: 1
+    t.integer "roster_size"
+    t.jsonb "order"
   end
 
   create_table "drafts_tables", force: :cascade do |t|
@@ -44,6 +60,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_004225) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "fantasy_league_id"
+    t.index ["fantasy_league_id"], name: "index_fantasy_teams_on_fantasy_league_id"
   end
 
   create_table "leagues_tables", force: :cascade do |t|
@@ -85,7 +103,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_004225) do
     t.index ["players_id"], name: "index_teams_on_players_id"
   end
 
+  add_foreign_key "draft_picks", "drafts"
+  add_foreign_key "draft_picks", "fantasy_teams"
+  add_foreign_key "draft_picks", "players"
   add_foreign_key "fantasy_leagues", "drafts"
+  add_foreign_key "fantasy_teams", "fantasy_leagues"
   add_foreign_key "players", "teams"
   add_foreign_key "rosters", "fantasy_teams"
   add_foreign_key "rosters", "players"

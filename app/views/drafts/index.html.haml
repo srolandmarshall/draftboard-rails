@@ -1,0 +1,19 @@
+%h1 Drafts
+%table
+  %thead
+    %tr
+      %th Title
+      %th League
+      %th Current Pick
+      %th
+      %th
+      %th
+  %tbody
+    - @drafts.each do |draft|
+      %tr
+        %td= draft.title
+        %td= draft.fantasy_league.name
+        %td= draft.current_pick
+        %td= link_to 'Show', draft
+        %td= link_to 'Edit', edit_draft_path(draft)
+        %td= link_to 'Destroy', draft, method: :delete, data: { confirm: 'Are you sure?' }

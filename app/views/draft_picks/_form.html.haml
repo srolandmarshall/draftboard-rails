@@ -1,0 +1,12 @@
+%form{action: '/draft_picks', method: 'post'}
+  = token_tag(nil)
+  = hidden_field_tag 'draft_pick[draft_id]', @draft.id
+  = hidden_field_tag 'draft_pick[fantasy_team_id]', @draft.current_team.id
+  = hidden_field_tag 'draft_pick[pick_number]', @draft.current_pick
+  -# select field of available_players
+  %div#draft_pick_player_id
+    %label{for: 'draft_pick_player_id'} Player:
+    %select{name: 'draft_pick[player_id]', id: 'draft_pick_player_id'}
+      - @available_players.each do |player|
+        %option{value: player.id}= player.draftboard_display
+  %input{type: 'submit', value: 'Make Draft Pick'}

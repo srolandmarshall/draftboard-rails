@@ -68,6 +68,7 @@ task nfl_team_data: :environment do
   Team.all.each do |team|
     url = team.url
     response = HTTParty.get(url)
+
     # parse data from response
     team_name = response.parsed_response['name']
     location = response.parsed_response['location']
