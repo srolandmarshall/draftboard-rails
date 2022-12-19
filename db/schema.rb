@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_18_170407) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_19_004225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_18_170407) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "data"
+    t.string "url"
     t.bigint "team_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
@@ -77,9 +78,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_18_170407) do
     t.string "location"
     t.string "team_name"
     t.string "abbreviation"
-    t.bigint "players_id", null: false
+    t.bigint "players_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
     t.index ["players_id"], name: "index_teams_on_players_id"
   end
 

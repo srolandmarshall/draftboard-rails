@@ -64,7 +64,7 @@ module Wrappers
 
     def oauth_data
       path = 'public/yahoo_oauth.json'
-      return JSON.parse(path) if File.exist?(path)
+      return JSON.parse(File.read(path)) if File.exist?(path)
 
       raise 'No oauth data found'
     end
@@ -81,10 +81,13 @@ module Wrappers
       headers = {
         'Authorization' => "Bearer #{access_token}"
       }
-      
+
+      response = HTTParty.get("#{fantasy_api_url}players",
+                              headers:, query: params, timeout: 1000)
     end
   end
 end
 
 # Wrappers::YahooFantasy.new.request_auth_url
 # Wrappers::YahooFantasy.new.get_oauth
+# yf = Wrappers::YahooFantasy.new
