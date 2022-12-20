@@ -5,14 +5,18 @@
 - if @draft.active
   = render partial: "draft_picks/form", locals: { draft_id: @draft.id, fantasy_team_id: @draft.current_team.id, current_pick: @draft.current_pick }
 
-%h3 Draft
-.container{data: {controller: "draftpick"}}
-  - @draft.order.each_slice(@fantasy_teams.size) do |slice|
-    .row.justify-content-center
-      - slice.each do |pick_number, fantasy_team_id|
-        - fantasy_team = FantasyTeam.find(fantasy_team_id)
-        .col-sm-2.col-xl-1
-          - if draft_pick = @draft.draft_picks.find_by(pick_number: pick_number)
-            %p Pick #{pick_number}: #{fantasy_team.name} - #{draft_pick.player.draftboard_display}
-          - else
-            %p Pick #{pick_number}: #{fantasy_team.name}
+  %h3 Draft
+  .container{data: {controller: "draftpick"}}
+    - @draft.order.each_slice(@fantasy_teams.size) do |slice|
+      .row.justify-content-center
+        - slice.each do |pick_number, fantasy_team_id|
+          - fantasy_team = FantasyTeam.find(fantasy_team_id)
+          .col-sm-2.col-xl-1
+            - if draft_pick = @draft.draft_picks.find_by(pick_number: pick_number)
+              %p Pick #{pick_number}: #{fantasy_team.name} - #{draft_pick.player.draftboard_display}
+            - else
+              %p Pick #{pick_number}: #{fantasy_team.name}
+    -# reset draft button
+    .row
+      .col-12
+        = button_to "Reset Draft", reset_draft_path(@draft), method: :post, class: "btn btn-danger", style: "width: 100%;"

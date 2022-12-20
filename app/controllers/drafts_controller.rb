@@ -1,5 +1,5 @@
 class DraftsController < ApplicationController
-  before_action :set_draft, only: %i[show edit update destroy start_draft]
+  before_action :set_draft, only: %i[show edit update destroy start_draft reset]
 
   # GET /drafts or /drafts.json
   def index
@@ -26,6 +26,12 @@ class DraftsController < ApplicationController
 
   # GET /drafts/1/edit
   def edit; end
+
+  # PUT /drafts/1/reset
+  def reset
+    @draft.reset
+    redirect_to draft_path(@draft)
+  end
 
   # POST /drafts or /drafts.json
   def create
