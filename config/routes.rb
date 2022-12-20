@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :draft_picks
   resources :teams
   resources :fantasy_teams
+  # route for stimulus autocomplete
+  get '/players/search', to: 'players#search', as: 'search_players'
   resources :players
   resources :drafts
   # create a "start_draft_path" route that turns active to true

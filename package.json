@@ -3,10 +3,18 @@
   "private": "true",
   "dependencies": {
     "@hotwired/stimulus": "^3.2.1",
+    "@popperjs/core": "^2.11.6",
+    "autoprefixer": "^10.4.13",
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.2",
     "esbuild": "^0.16.8",
-    "esbuild-rails": "^1.0.3"
+    "esbuild-rails": "^1.0.3",
+    "postcss": "^8.4.20",
+    "sass": "^1.57.1",
+    "stimulus-autocomplete": "^3.0.2"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
+    "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   }
 }

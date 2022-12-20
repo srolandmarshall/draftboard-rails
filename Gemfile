@@ -80,3 +80,5 @@ gem "omniauth-yahoo-oauth2", "~> 1.2"
 gem "faker", "~> 3.0"
 
 gem "haml-rails", "~> 2.1"
+
+gem "cssbundling-rails", "~> 1.1"

@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy ]
+  before_action :set_player, only: %i[show edit update destroy]
 
   # GET /players or /players.json
   def index
@@ -7,8 +7,7 @@ class PlayersController < ApplicationController
   end
 
   # GET /players/1 or /players/1.json
-  def show
-  end
+  def show; end
 
   # GET /players/new
   def new
@@ -16,7 +15,15 @@ class PlayersController < ApplicationController
   end
 
   # GET /players/1/edit
-  def edit
+  def edit; end
+
+  # GET /players/search
+  # provides html fragments for stimulus autocomplete
+  def search
+    @players = params[:q].present? ? Player.where('full_name ILIKE ?', "%#{params[:q]}%") : []
+    respond_to do |format|
+      format.html { render partial: 'players/autocomplete', collection: @players }
+    end
   end
 
   # POST /players or /players.json
@@ -25,7 +32,7 @@ class PlayersController < ApplicationController
 
     respond_to do |format|
       if @player.save
-        format.html { redirect_to player_url(@player), notice: "Player was successfully created." }
+        format.html { redirect_to player_url(@player), notice: 'Player was successfully created.' }
         format.json { render :show, status: :created, location: @player }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +45,7 @@ class PlayersController < ApplicationController
   def update
     respond_to do |format|
       if @player.update(player_params)
-        format.html { redirect_to player_url(@player), notice: "Player was successfully updated." }
+        format.html { redirect_to player_url(@player), notice: 'Player was successfully updated.' }
         format.json { render :show, status: :ok, location: @player }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +59,20 @@ class PlayersController < ApplicationController
     @player.destroy
 
     respond_to do |format|
-      format.html { redirect_to players_url, notice: "Player was successfully destroyed." }
+      format.html { redirect_to players_url, notice: 'Player was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_player
-      @player = Player.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def player_params
-      params.fetch(:player, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_player
+    @player = Player.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def player_params
+    params.fetch(:player, {})
+  end
 end
