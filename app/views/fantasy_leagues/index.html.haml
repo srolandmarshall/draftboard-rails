@@ -1,2 +1,20 @@
 %h1 Fantasy Leagues
 
+- if @fantasy_leagues.empty?
+  %p No fantasy_leagues found.
+- else
+= button_to 'New Fantasy League', new_fantasy_league_path
+-# Bootstrap table for fantasy_leagues with show & edit links
+%table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th
+      %th
+  %tbody
+    - @fantasy_leagues.each do |fantasy_league|
+      %tr
+        %td= fantasy_league.name
+        %td= link_to 'Show', fantasy_league
+        %td= link_to 'Edit', edit_fantasy_league_path(fantasy_league)
+%br

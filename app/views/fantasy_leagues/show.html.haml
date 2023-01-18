@@ -1,0 +1,32 @@
+%h1= @fantasy_league.name
+
+%h2 Teams
+-# Add fantasy team link
+= button_to 'New Team', new_fantasy_team_path(@fantasy_league)
+-# Bootstrap table for teams with show & edit links
+
+%h2 Drafts
+-# Bootstrap table for drafts with title, scheduled_date, active?, and show/edit links
+%table.table.table-striped
+  %thead
+    %tr
+      %th Title
+      %th Scheduled Date
+      %th Active?
+      %th
+      %th
+  %tbody
+    - @fantasy_league.drafts.each do |draft|
+      %tr
+        %td= draft.title
+        -# Date in format January 1, 2018 12:00 PM
+        %td
+          = draft.scheduled_date.strftime("%B %-d, %Y %l:%M %p")
+          %br/
+          -# A link to a google calendar evnet for the above date
+          = link_to 'gcal', "https://www.google.com/calendar/render?action=TEMPLATE&text=#{draft.title}&dates=#{draft.scheduled_date.strftime('%Y%m%dT%H%M%S')}/#{draft.scheduled_date.strftime('%Y%m%dT%H%M%S')}&details=#{draft.title}&sf=true&output=xml", target: '_blank'
+          -# A link to iCal event for the above date
+          = link_to 'ical', "webcal://www.google.com/calendar/ical/#{draft.scheduled_date.strftime('%Y%m%dT%H%M%S')}/#{draft.scheduled_date.strftime('%Y%m%dT%H%M%S')}/#{draft.title}.ics", target: '_blank'
+        %td= draft.active? ? 'Yes' : 'No'
+        %td= link_to 'Show', draft
+        %td= link_to 'Edit', edit_draft_path(draft)
