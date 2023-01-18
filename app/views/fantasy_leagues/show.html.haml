@@ -2,7 +2,7 @@
 
 %h2 Teams
 -# Add fantasy team link
-= button_to 'New Team', new_fantasy_team_path(@fantasy_league)
+= link_to 'New Fantasy Team', new_fantasy_league_team_path(@fantasy_league), {class: 'btn btn-primary'}
 -# Bootstrap table for teams with show & edit links
 
 %h2 Drafts
