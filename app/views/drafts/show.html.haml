@@ -15,7 +15,7 @@
             - if draft_pick = @draft.draft_picks.find_by(pick_number: pick_number)
               %p Pick #{pick_number}: #{fantasy_team.name} - #{draft_pick.player.draftboard_display}
             - else
-              %p Pick #{pick_number}: #{fantasy_team.name}
+              %p Pick #{pick_number}: #{fantasy_team.name.titleize}
     -# reset draft button
     .row
       .col-12
