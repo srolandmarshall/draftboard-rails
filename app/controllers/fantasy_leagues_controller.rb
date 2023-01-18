@@ -9,6 +9,7 @@ class FantasyLeaguesController < ApplicationController
   # GET /fantasy_leagues/1 or /fantasy_leagues/1.json
   def show
     @drafts = @fantasy_league.drafts
+    @teams = @fantasy_league.fantasy_teams
   end
 
   # GET /fantasy_leagues/new
