@@ -1,0 +1,6 @@
+.card
+  .card-body.text-center
+    - if pick = DraftPick.find_by(draft: @draft, pick_number: pick_number)
+      %p= "Round #{round + 1}, Pick #{pick_number} - #{pick.player.full_name}"
+    - else
+      %p= "Round #{round + 1}, Pick #{pick_number} - #{team.name.titleize}"
