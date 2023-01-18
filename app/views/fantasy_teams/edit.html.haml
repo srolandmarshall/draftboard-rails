@@ -1,0 +1,4 @@
+-# edit page for a fantasy team
+%h1 Editing #{@fantasy_team.name}
+%h2= @fantasy_team.fantasy_league.name
+= render partial: 'form', locals: { team: @fantasy_team }

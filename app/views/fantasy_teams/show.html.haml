@@ -1,0 +1,5 @@
+%h1= @fantasy_team.name
+%h2
+  = link_to @fantasy_team.fantasy_league.name, fantasy_league_path(@fantasy_team.fantasy_league)
+
+%h3 Players
