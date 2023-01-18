@@ -1,11 +1,16 @@
 %h1= @fantasy_league.name
 
-%h2 Teams
--# Add fantasy team link
-= link_to 'New Fantasy Team', new_fantasy_league_team_path(@fantasy_league), {class: 'btn btn-primary'}
-
--# teams partial from fantasy_teams
-= render partial: 'fantasy_teams/teams', locals: { teams: @teams }
-
-%h2 Drafts
-= render partial: 'drafts/drafts', locals: { drafts: @drafts }
+-# bootstrap container with two columns taking 50% of the width
+%div.container-fluid
+  %div.row
+    %div.col-md-6
+      %h2 Teams
+      -# Add fantasy team link
+      = link_to 'New Fantasy Team', new_fantasy_league_team_path(@fantasy_league), {class: 'btn btn-primary'}
+      -# teams partial from fantasy_teams
+      = render partial: 'fantasy_teams/teams', locals: { teams: @teams }
+    %div.col-md-6
+      %h2 Drafts
+      -# new draft link button
+      = link_to 'Start New Draft', new_draft_path(fantasy_league_id: @fantasy_league), {class: 'btn btn-primary'}
+      = render partial: 'drafts/drafts', locals: { drafts: @drafts }
