@@ -1,4 +1,4 @@
-= form_for @fantasy_team do |form|
+= form_with model: @fantasy_team do |form|
   -# name field, with the field already filled in if it exists
   = form.label :name, 'Team Name:', class: 'form-label', for: 'name'
   = form.text_field :name
