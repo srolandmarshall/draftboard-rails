@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   put '/drafts/:id/start_draft', to: 'drafts#start_draft', as: 'start_draft'
   post '/drafts/:id/reset', to: 'drafts#reset', as: 'reset_draft'
   resources :fantasy_leagues do
-    # nested resources for fantasy_leagues/teams, which is an alias for fantasy_teams
     resources :teams, controller: 'fantasy_teams'
   end
 
