@@ -3,7 +3,9 @@
 %h2 Teams
 -# Add fantasy team link
 = link_to 'New Fantasy Team', new_fantasy_league_team_path(@fantasy_league), {class: 'btn btn-primary'}
--# Bootstrap table for teams with show & edit links
+
+-# teams partial from fantasy_teams
+= render partial: 'fantasy_teams/teams', locals: { teams: @teams }
 
 %h2 Drafts
 -# Bootstrap table for drafts with title, scheduled_date, active?, and show/edit links

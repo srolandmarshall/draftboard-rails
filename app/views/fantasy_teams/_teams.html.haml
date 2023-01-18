@@ -1,0 +1,12 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th
+      %th
+  %tbody
+    - @teams.each do |team|
+      %tr
+        %td= team.name.titleize
+        %td= link_to 'Show', fantasy_league_team_path(@fantasy_league, team)
+        %td= link_to 'Edit', edit_fantasy_league_team_path(@fantasy_league, team)
