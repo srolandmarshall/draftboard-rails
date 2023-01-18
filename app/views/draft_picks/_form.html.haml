@@ -6,5 +6,5 @@
   -# select field of available_players
   %div#draft_pick_player_id
     %label{for: 'draft_pick_player_id'} Player:
-    = render partial: 'players/select', locals: { players: @draft.available_players }
-  %input{type: 'submit', value: 'Make Draft Pick', class: 'btn btn-primary'}
+    = render partial: 'players/select', locals: { players: @draft.available_players, draft_id: draft_id }
+  %input{type: 'submit', value: 'Make Draft Pick', class: 'btn btn-primary' }

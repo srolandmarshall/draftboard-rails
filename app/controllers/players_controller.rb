@@ -20,9 +20,9 @@ class PlayersController < ApplicationController
   # GET /players/search
   # provides html fragments for stimulus autocomplete
   def search
-    @players = params[:q].present? ? Player.where('full_name ILIKE ?', "%#{params[:q]}%") : []
+    @players = Player.not_drafted(params[:draft_id]).where('full_name ILIKE ?', "%#{params[:q]}%").limit(10)
     respond_to do |format|
-      format.html { render partial: 'players/autocomplete', collection: @players }
+      format.html { render partial: 'players/autocomplete', locals: { players: @players } }
     end
   end
 

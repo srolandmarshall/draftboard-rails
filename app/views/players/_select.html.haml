@@ -1,4 +1,4 @@
-%div#player-select{data: {controller: 'autocomplete', autocomplete_url_value:"/players/search", role:"combobox"}}
+%div#player-select{data: {controller: 'autocomplete', autocomplete_url_value:"/players/search?draft=#{draft_id}", role:"combobox"}}
   %input{type: 'text', class: 'form-control', data: {autocomplete_target: 'input'}}
   %input{type: 'hidden', name: 'draft_pick[player_id]', id: 'player_id', data: {autocomplete_target: 'hidden'}}
   %ul{class: 'list-group', data: {autocomplete_target: 'results'}}

@@ -35,6 +35,13 @@ class Draft < ApplicationRecord
     order_hash
   end
 
+  def order_with_teams
+    # for each pair in the order hash, find the team and return a hash of the pick and team
+    order.map do |pick, team_id|
+      { pick:, team: FantasyTeam.find_by(id: team_id) }
+    end
+  end
+
   def current_team
     fantasy_teams.find_by(id: order[current_pick.to_s])
   end
