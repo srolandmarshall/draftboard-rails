@@ -1,5 +1,5 @@
 class FantasyTeamsController < ApplicationController
-  before_action :set_fantasy_team, only: %i[ show edit update destroy ]
+  before_action :set_fantasy_team, only: %i[show edit update destroy]
 
   # GET /fantasy_teams or /fantasy_teams.json
   def index
@@ -7,8 +7,7 @@ class FantasyTeamsController < ApplicationController
   end
 
   # GET /fantasy_teams/1 or /fantasy_teams/1.json
-  def show
-  end
+  def show; end
 
   # GET /fantasy_teams/new
   def new
@@ -16,8 +15,7 @@ class FantasyTeamsController < ApplicationController
   end
 
   # GET /fantasy_teams/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /fantasy_teams or /fantasy_teams.json
   def create
@@ -25,7 +23,7 @@ class FantasyTeamsController < ApplicationController
 
     respond_to do |format|
       if @fantasy_team.save
-        format.html { redirect_to fantasy_team_url(@fantasy_team), notice: "Fantasy team was successfully created." }
+        format.html { redirect_to fantasy_team_url(@fantasy_team), notice: 'Fantasy team was successfully created.' }
         format.json { render :show, status: :created, location: @fantasy_team }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +36,7 @@ class FantasyTeamsController < ApplicationController
   def update
     respond_to do |format|
       if @fantasy_team.update(fantasy_team_params)
-        format.html { redirect_to fantasy_team_url(@fantasy_team), notice: "Fantasy team was successfully updated." }
+        format.html { redirect_to fantasy_team_url(@fantasy_team), notice: 'Fantasy team was successfully updated.' }
         format.json { render :show, status: :ok, location: @fantasy_team }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +50,21 @@ class FantasyTeamsController < ApplicationController
     @fantasy_team.destroy
 
     respond_to do |format|
-      format.html { redirect_to fantasy_teams_url, notice: "Fantasy team was successfully destroyed." }
+      format.html { redirect_to fantasy_teams_url, notice: 'Fantasy team was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_fantasy_team
-      @fantasy_team = FantasyTeam.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def fantasy_team_params
-      params.fetch(:fantasy_team, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_fantasy_team
+    id = params[:fantasy_team_id] || params[:id]
+    @fantasy_team = FantasyTeam.find(id.to_i)
+  end
+
+  # Only allow a list of trusted parameters through.
+  def fantasy_team_params
+    params.require(:fantasy_team).permit(:name, :fantasy_league_id)
+  end
 end
