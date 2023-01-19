@@ -11,7 +11,7 @@
       - @draft.order_with_teams.each_slice(@fantasy_teams.size).with_index do |slice, round|
         .row
           - slice.each do |pick|
-            .col-xl-2.col-md-3.col-sm-3.form-group.my-1
+            .col-xl-2.col-md-3.form-group.my-1
               = render partial: "draft_picks/draft_pick", locals: { pick_number: pick[:pick], round: round, team: pick[:team] }
 
       -# reset draft button
