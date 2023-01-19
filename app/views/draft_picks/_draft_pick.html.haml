@@ -1,9 +1,6 @@
 .card
-  .card-body.text-center
+  %div.card-body.text-center{id: "draft-pick-#{pick[:number]}"}
+    %p= "Round #{round + 1}, Pick #{pick[:number]}"
     - if draft_pick
-      %p= "Round #{round + 1}, Pick #{pick[:number]}"
-      %p= draft_pick.player.full_name
-      %p= pick[:team].name.titleize
-    - else
-      %p= "Round #{round + 1}, Pick #{pick[:number]}"
-      %p= pick[:team].name.titleize
+      %p.player-name= draft_pick.player.full_name
+    %p= pick[:team].name.titleize

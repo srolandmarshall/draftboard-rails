@@ -1,6 +1,6 @@
 %h1 Draft #{@draft.id}
 %h2 #{@draft.fantasy_league.name}
-%h3 Current Pick: #{@draft.current_pick}
+%h3 Current Pick: ##{@draft.current_pick} - #{@draft.current_team.name.titleize}
 
 - if @draft.active
   = render partial: "draft_picks/form", locals: { draft_id: @draft.id, fantasy_team_id: @draft.current_team.id, current_pick: @draft.current_pick }
