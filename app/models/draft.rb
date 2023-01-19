@@ -9,8 +9,9 @@ class Draft < ApplicationRecord
     Player.not_drafted(id)
   end
 
-  def reset
+  def reset!
     draft_picks.destroy_all
+    @order_with_teams = nil
     update(current_pick: 1, order: generate_order)
   end
 
@@ -21,12 +22,13 @@ class Draft < ApplicationRecord
     roster_size.times do |i|
       order_array += i.odd? ? order : order.reverse
     end
+    order_with_teams # sets the memoized @order_with_teams
     order_array
   end
 
   def order_with_teams
     # for each pair in the order array, find the team and return a hash of the pick and team
-    order.map.with_index do |team_id, index|
+    @order_with_teams ||= order.map.with_index do |team_id, index|
       { pick: index + 1, team: FantasyTeam.find_by(id: team_id) }
     end
   end
