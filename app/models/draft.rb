@@ -27,9 +27,8 @@ class Draft < ApplicationRecord
   end
 
   def order_with_teams
-    # for each pair in the order array, find the team and return a hash of the pick and team
     @order_with_teams ||= order.map.with_index do |team_id, index|
-      { pick: index + 1, team: FantasyTeam.find_by(id: team_id) }
+      { number: index + 1, team: FantasyTeam.find_by(id: team_id) }
     end
   end
 

@@ -12,7 +12,7 @@
         .row
           - slice.each do |pick|
             .col-xl-2.col-md-3.form-group.my-1
-              = render partial: "draft_picks/draft_pick", locals: { pick_number: pick[:pick], round: round, team: pick[:team] }
+              = render partial: "draft_picks/draft_pick", locals: { round:, pick: pick, draft_pick: @draft_picks.find_by(pick_number: pick[:number]) }
 
       -# reset draft button
       .row
