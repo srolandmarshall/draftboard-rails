@@ -46,4 +46,18 @@ class Draft < ApplicationRecord
   def increment_pick!
     update(current_pick: current_pick + 1)
   end
+
+  def decrement_pick!
+    update(current_pick: current_pick - 1)
+  end
+
+  def make_pick(player_id, fantasy_team_id = current_team.id, pick_number = current_pick)
+    draft_picks.create(pick_number:, player_id:, fantasy_team_id:)
+    increment_pick! if pick_number == current_pick
+  end
+
+  def undo_pick!
+    draft_picks.last.destroy
+    decrement_pick!
+  end
 end
