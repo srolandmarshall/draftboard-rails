@@ -1,0 +1,6 @@
+-# https://getbootstrap.com/docs/5.2/components/alerts/#dismissing
+
+- flash.each do |key, value|
+  = content_tag :div, value, class: "alert alert-#{key} alert-dismissible fade show", role: "alert" do
+    = value
+    %button{type: "button", class: "btn-close", "data-bs-dismiss": "alert", "aria-label": "Close"}
