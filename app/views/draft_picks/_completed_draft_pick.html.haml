@@ -1,0 +1,10 @@
+.card
+  %div.card-body.text-center{id: "draft-pick-#{draft_pick.pick_number}"}
+    %p= "Round #{draft_pick.round}, Pick #{draft_pick.pick_number}"
+    %p= draft_pick.fantasy_team.name.titleize
+    %p.player-details
+      #{draft_pick.player.full_name}
+      %br
+      #{draft_pick.player.position}
+      %br
+      #{draft_pick.player.team.full_name}
