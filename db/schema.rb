@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_20_020910) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_20_021921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_020910) do
     t.integer "current_pick", default: 1
     t.integer "roster_size"
     t.jsonb "order"
+    t.integer "current_round"
   end
 
   create_table "drafts_tables", force: :cascade do |t|

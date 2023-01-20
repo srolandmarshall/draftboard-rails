@@ -3,16 +3,19 @@
 %h3 Current Pick: ##{@draft.current_pick} - #{@draft.current_team.name.titleize}
 
 - if @draft.active
-  = render partial: "draft_picks/form", locals: { draft_id: @draft.id, fantasy_team_id: @draft.current_team.id, current_pick: @draft.current_pick }
+  = render partial: "draft_picks/form", locals: { draft: @draft }
 
   %h3 Draft
   .container
     .container-fluid{data: {controller: "draftpick"}}
-      - @draft.order_with_teams.each_slice(@fantasy_teams.size).with_index do |slice, round|
+      - @order.each_with_index do |round, i|
         .row
-          - slice.each do |pick|
+          - round.each do |pick|
             .col-xl-2.col-md-3.form-group.my-1
-              = render partial: "draft_picks/draft_pick", locals: { round:, pick: pick, draft_pick: @draft_picks.find_by(pick_number: pick[:number]) }
+              - if draft_pick = @draft_picks.find_by(pick_number: pick[:pick_number], round: pick[:round])
+                = render partial: "draft_picks/completed_draft_pick", locals: { draft_pick: draft_pick }
+              - else
+                = render partial: "draft_picks/draft_pick", locals: { round: pick[:round], pick_number: pick[:pick_number], team: pick[:team] }
 
       -# reset draft button
       .row
