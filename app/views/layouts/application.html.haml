@@ -10,4 +10,6 @@
     = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
 
   %body
-    = yield
+    = render partial: "layouts/flash"
+    .container#main-container
+      = yield
