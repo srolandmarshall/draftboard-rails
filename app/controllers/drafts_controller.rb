@@ -30,7 +30,8 @@ class DraftsController < ApplicationController
 
   # PUT /drafts/1/reset
   def reset
-    @draft.reset
+    @draft.reset!
+    flash[:notice] = 'Draft has been reset.'
     redirect_to draft_path(@draft)
   end
 
