@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get '/players/search', to: 'players#search', as: 'search_players'
   resources :players
   resources :drafts do
-    get 'board', on: :member
+    get 'board', on: :member, as: 'board'
   end
   # create a "start_draft_path" route that turns active to true
   put '/drafts/:id/start_draft', to: 'drafts#start_draft', as: 'start_draft'
