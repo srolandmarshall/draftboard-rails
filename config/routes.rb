@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   # route for stimulus autocomplete
   get '/players/search', to: 'players#search', as: 'search_players'
   resources :players
-  resources :drafts
+  resources :drafts do
+    get 'board', on: :member
+  end
   # create a "start_draft_path" route that turns active to true
   put '/drafts/:id/start_draft', to: 'drafts#start_draft', as: 'start_draft'
   # allow get or post to reset draft

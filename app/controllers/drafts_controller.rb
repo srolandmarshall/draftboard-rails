@@ -1,5 +1,5 @@
 class DraftsController < ApplicationController
-  before_action :set_draft, only: %i[show edit update destroy start_draft reset]
+  before_action :set_draft, except: %i[index new create]
 
   # GET /drafts or /drafts.json
   def index
@@ -27,6 +27,13 @@ class DraftsController < ApplicationController
 
   # GET /drafts/1/edit
   def edit; end
+
+  # GET /drafts/1/board
+  def board
+    @order = @draft.order_with_teams
+    @draft_picks = @draft.draft_picks
+    @fantasy_teams = @draft.fantasy_teams
+  end
 
   # PUT /drafts/1/reset
   def reset
