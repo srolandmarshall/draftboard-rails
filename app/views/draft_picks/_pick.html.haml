@@ -1,5 +1,8 @@
-- if draft_pick = @draft.draft_picks.find_by(pick_number: pick[:pick_number], round: pick[:round])
-  = render partial: "draft_picks/completed_draft_pick", locals: { draft_pick: draft_pick }
-- else
-  .text-center{id: "draft-pick-#{pick[:pick_number]}"}
-    %p= pick[:team].name.titleize
+.text-center{id: "draft-pick-#{pick[:pick_number]}"}
+  - if draft_pick = @draft.draft_picks.find_by(pick_number: pick[:pick_number], round: pick[:round])
+    #{draft_pick.player.full_name}
+    #{draft_pick.player.position}
+    %br/ 
+    #{draft_pick.player.team.full_name}
+  - else
+    %p.align-middle= pick[:team].name.titleize
