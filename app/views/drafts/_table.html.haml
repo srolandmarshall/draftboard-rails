@@ -1,0 +1,17 @@
+%table.table.table-sm.table-striped.table-bordered.table-responsive.table-hover
+  %thead
+    %tr
+      %th{scope: 'col'}= "Round"
+      - @fantasy_teams.size.times do |i|
+        %th.text-center{scope: 'col'}= "Pick #{i + 1}"
+  %tbody
+    - @order.each_with_index do |round, i|
+      %tr
+        %td
+          %strong.text-center= i + 1
+        - round.each do |pick|
+          %td
+            = render partial: "draft_picks/pick", locals: { pick: pick }
+
+
+    

@@ -1,23 +1,18 @@
-%h1 Draft #{@draft.id}
+%h1 Draft #{@draft.title}
 %h2 #{@draft.fantasy_league.name}
-%h3 Current Pick: ##{@draft.current_pick} - #{@draft.current_team.name.titleize}
+%h3 Current Pick: Round #{@draft.current_round}, Pick #{@draft.current_pick} - #{@draft.current_team.name.titleize}
 
+= link_to 'Show Draft Board', board_draft_path(@draft), class: 'btn btn-success'
 - if @draft.active
   = render partial: "draft_picks/form", locals: { draft: @draft }
-
-  %h3 Draft
-  .container
-    .container-fluid{data: {controller: "draftpick"}}
-      - @order.each_with_index do |round, i|
-        .row
-          - round.each do |pick|
-            .col-xl-2.col-md-3.form-group.my-1
-              - if draft_pick = @draft_picks.find_by(pick_number: pick[:pick_number], round: pick[:round])
-                = render partial: "draft_picks/completed_draft_pick", locals: { draft_pick: draft_pick }
-              - else
-                = render partial: "draft_picks/draft_pick", locals: { round: pick[:round], pick_number: pick[:pick_number], team: pick[:team] }
-
-      -# reset draft button
-      .row
-        .col-12
-          = button_to "Reset Draft", reset_draft_path(@draft), method: :post, class: "btn btn-danger", style: "width: 100%;"
+  %h4 Current Round
+  %table.table.table-sm.table-bordered
+    %thead
+      %tr
+        - @fantasy_teams.size.times do |i|
+          %th.text-center{scope: 'col'}= "Pick #{i + 1}"
+    %tbody
+      %tr
+        - @round.each do |pick|
+          %td
+            = render partial: "draft_picks/pick", locals: { pick: pick }
