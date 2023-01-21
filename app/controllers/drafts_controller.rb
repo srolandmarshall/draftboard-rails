@@ -14,8 +14,7 @@ class DraftsController < ApplicationController
   # GET /drafts/1 or /drafts/1.json
   def show
     @available_players = Player.not_drafted(@draft.id)
-    @order = @draft.order_with_teams
-    @draft_picks = @draft.draft_picks
+    @round = @draft.order_with_teams[@draft.current_round_index]
     @fantasy_teams = @draft.fantasy_teams
   end
 
