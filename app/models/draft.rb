@@ -108,9 +108,16 @@ class Draft < ApplicationRecord
     update(current_pick: current_pick - 1)
   end
 
-  def make_pick(player_id, fantasy_team_id = current_team.id, pick_number = current_pick)
+  def make_pick
+    set_firestore_state!
+    increment_pick!
+  end
+
+  # this is only to be used in console, probably should delete it
+  def make_pick!(player_id, fantasy_team_id = current_team.id, pick_number = current_pick)
     draft_picks.create(pick_number:, player_id:, fantasy_team_id:)
-    increment_pick! if pick_number == current_pick
+    set_firestore_state!
+    increment_pick!
   end
 
   def undo_pick!

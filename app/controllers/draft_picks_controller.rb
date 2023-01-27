@@ -25,7 +25,7 @@ class DraftPicksController < ApplicationController
 
     respond_to do |format|
       if @draft_pick.save
-        @draft_pick.draft.increment_pick!
+        @draft_pick.draft.make_pick
         format.html { redirect_to draft_url(@draft_pick.draft), notice: 'Draft pick was successfully created.' }
         format.json { render :show, status: :created, location: @draft_pick }
       else
