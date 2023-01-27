@@ -38,8 +38,8 @@ class Draft < ApplicationRecord
 
   def by_round; end
 
+  # this creates an array similar to #initialize_state, but provides player ids if there is a DraftPick
   def generate_state
-    # this creates an array similar to #initialize_state, but provides player ids if there is a DraftPick
     order.map do |round|
       { round['round'] => round['order'].map do |team_id|
         { team_id => draft_pick_lookup({ round: round['round'], fantasy_team_id: team_id }) }
@@ -47,6 +47,7 @@ class Draft < ApplicationRecord
     end
   end
 
+  # returns id of player if there is a draft pick for the given options, otherwise returns nil
   def draft_pick_lookup(opts = {})
     pick = draft_picks.find_by(opts)
     pick&.player_id
