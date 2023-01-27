@@ -4,32 +4,24 @@ class FirestoreService
       @client ||= Google::Cloud::Firestore.new
     end
 
-    def collection(name)
-      client.col(name)
+    def drafts
+      client.col 'drafts'
     end
 
-    def document(name)
-      client.doc(name)
+    def draft_reference(id)
+      drafts.doc id
     end
 
-    def get_document(name)
-      document(name).get
+    def draft_document(id)
+      draft_reference(id).get
     end
 
-    def get_collection(name)
-      collection(name).get
+    def draft_state(id)
+      draft_document(id)[:state]
     end
 
-    def create_document(name, data)
-      document(name).create(data)
-    end
-
-    def update_document(name, data)
-      document(name).update(data)
-    end
-
-    def delete_document(name)
-      document(name).delete
+    def set_draft_state!(id, state)
+      draft_reference(id).set({ state: })
     end
   end
 end
