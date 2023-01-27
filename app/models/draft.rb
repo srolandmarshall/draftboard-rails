@@ -24,6 +24,42 @@ class Draft < ApplicationRecord
     end
   end
 
+  # generates a hash of hashes with the key being the round and the value being an array of hashes with the key being the team ID and the value being nil
+  # this is more friendly for use in js state
+  def initialize_state
+    (1..roster_size).map do |i|
+      { i => order.map { |team_id| { team_id => nil } } }
+    end
+  end
+
+  def reset_firestore_state!
+    FirestoreService.set_draft_state!(id, initialize_state)
+  end
+
+  def by_round; end
+
+  def generate_state
+    # this creates an array similar to #initialize_state, but provides player ids if there is a DraftPick
+    order.map do |round|
+      { round['round'] => round['order'].map do |team_id|
+        { team_id => draft_pick_lookup({ round: round['round'], fantasy_team_id: team_id }) }
+      end }
+    end
+  end
+
+  def draft_pick_lookup(opts = {})
+    pick = draft_picks.find_by(opts)
+    pick&.player_id
+  end
+
+  def set_firestore_state!
+    FirestoreService.set_draft_state!(id, generate_state)
+  end
+
+  def firestore_state
+    FirestoreService.draft_state(id)
+  end
+
   def order_with_teams
     # creates a 2d array, with the inner array an array of hashes, that represent the draft order
     @order_with_teams ||= order.map do |round|
