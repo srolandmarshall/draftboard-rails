@@ -82,3 +82,7 @@ gem "faker", "~> 3.0"
 gem "haml-rails", "~> 2.1"
 
 gem "cssbundling-rails", "~> 1.1"
+
+gem "rails-erd", "~> 1.7"
+
+gem "google-cloud-firestore", "~> 2.8"
