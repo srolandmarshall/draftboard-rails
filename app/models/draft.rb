@@ -26,12 +26,12 @@ class Draft < ApplicationRecord
     end
   end
 
-  # this creates an array similar to #initialize_state, but provides player ids if there is a DraftPick
+  # this creates a hash with round as the key, and the value is an array of hashes with fantasy_team_id and draft_pick_lookup
   def generate_state
-    order.map do |round|
-      { round['round'] => round['order'].map do |team_id|
-        { team_id => draft_pick_lookup({ round: round['round'], fantasy_team_id: team_id }) }
-      end }
+    order.each_with_object({}) do |round, state|
+      state[round['round']] = round['order'].map do |team_id|
+        { "#{team_id}": draft_pick_lookup(fantasy_team_id: team_id, round: round['round']) }
+      end
     end
   end
 
@@ -41,8 +41,8 @@ class Draft < ApplicationRecord
     pick&.player_id
   end
 
-  def set_firestore_state!
-    FirestoreService::Drafts.set_state!(id, generate_state)
+  def set_firestore_state!(state = generate_state)
+    FirestoreService::Drafts.set_state!(id, state)
   end
 
   def firestore_state
@@ -98,7 +98,7 @@ class Draft < ApplicationRecord
 
   def make_pick(pick_number = current_pick)
     set_firestore_state!
-    increment_pick! if pick_number == current_pick
+    increment_pick! if pick_number.to_i == current_pick
   end
 
   def undo_pick!
