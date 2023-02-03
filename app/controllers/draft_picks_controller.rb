@@ -25,7 +25,7 @@ class DraftPicksController < ApplicationController
 
     respond_to do |format|
       if @draft_pick.save
-        @draft_pick.draft.make_pick
+        @draft_pick.draft.make_pick(draft_pick_params[:pick_number])
         format.html { redirect_to draft_url(@draft_pick.draft), notice: 'Draft pick was successfully created.' }
         format.json { render :show, status: :created, location: @draft_pick }
       else
@@ -39,6 +39,7 @@ class DraftPicksController < ApplicationController
   def update
     respond_to do |format|
       if @draft_pick.update(draft_pick_params)
+        @draft_pick.draft.set_firestore_state!
         format.html { redirect_to draft_pick_url(@draft_pick), notice: 'Draft pick was successfully updated.' }
         format.json { render :show, status: :ok, location: @draft_pick }
       else
