@@ -14,11 +14,23 @@ class Player < ApplicationRecord
   # where not drafted in that draft
   scope :not_drafted, ->(draft_id) { where.not(id: DraftPick.where(draft_id:).pluck(:player_id)) }
 
+  # by league scope
+  scope :by_league, ->(league_name) { where(league_name:) }
+
   def full_name
     "#{first_name} #{last_name}"
   end
 
   def draftboard_display
     "#{full_name} (#{team.abbreviation}) - #{position}"
+  end
+
+  def attributes_without_data
+    attributes.except('data')
+  end
+
+  # Returns Google::Cloud::Firestore::DocumentReference for the player
+  def firestore_document
+    FirestoreService::Players.player_reference(id)
   end
 end

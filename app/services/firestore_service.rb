@@ -6,12 +6,56 @@ class FirestoreService
     def client
       @client ||= Google::Cloud::Firestore.new
     end
+  end
 
-    # Returns Google::Cloud::Firestore::CollectionReference for the Players collection
-    # If you provide a league, the collection will be scoped to that league
-    # Otherwise, they will be returned nested under the league
-    def players(league = nil)
-      client.col "players#{"/#{league}" if league}"
+  #
+  # Interface with the Players collection in Firebase
+  #
+  class Players
+    class << self
+      # Returns Google::Cloud::Firestore::CollectionReference for the Players collection
+      def all
+        FirestoreService.client.col 'players'
+      end
+
+      def player_reference(player_id)
+        all.doc(player_id)
+      end
+
+      def player_snapshot(player_id)
+        player_reference(player_id).get
+      end
+
+      # adds a player document, with the player's ID being the document ID
+      # will overwrite the document if it already exists
+      def add_player!(player)
+        puts "Adding #{player.full_name} to Firestore `players` collection"
+        player_document(player.id).set(player.attributes_without_data, merge: false)
+      end
+
+      # add a document for each player, with their ID being the document ID
+      # allows for a league to be passed in, which will only add players from that league
+      # if no league is passed in, all players will be added
+      # checks if player id exists in Firestore before adding, will skip record if it does
+      def add_all_players!(league = nil)
+        players = league ? Players.by_league(league) : Player.all
+        players.each do |player|
+          add_player!(player) unless player_snapshot(player.id).exists?
+        end
+      end
+
+      def update_player!(player)
+        player_reference(player.id).update(player.attributes_without_data)
+        puts "Updated Document #{player.id}: #{player.full_name} in Firestore `players` collection"
+      end
+
+      # updates/overwrites all players in the database
+      # allows for a league to be passed in, which will only update players from that league
+      # if no league is passed in, all players will be updated
+      def update_all_players!(league = nil)
+        players = league ? Players.by_league(league) : Player.all
+        players.each { |player| update_player!(player) }
+      end
     end
   end
 
