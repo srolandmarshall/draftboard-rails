@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_20_021921) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_044606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,6 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_021921) do
     t.string "url"
     t.bigint "team_id"
     t.string "full_name"
+    t.string "league_name"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
