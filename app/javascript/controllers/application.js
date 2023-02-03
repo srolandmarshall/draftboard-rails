@@ -1,11 +1,11 @@
-import { Application } from '@hotwired/stimulus'
-import { Autocomplete } from 'stimulus-autocomplete'
+import { Application } from "@hotwired/stimulus";
+import { Autocomplete } from "stimulus-autocomplete";
 
-const application = Application.start()
-application.register('autocomplete', Autocomplete)
+const application = Application.start();
+application.register("autocomplete", Autocomplete);
 
 // Configure Stimulus development experience
-application.debug = false
-window.Stimulus   = application
+application.debug = false;
+window.Stimulus = application;
 
-export { application }
+export { application };

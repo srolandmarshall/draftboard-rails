@@ -6,8 +6,10 @@ export default class extends Controller {
     console.log("Draft pick controller connected!")
   }
 
-  // on click, console log the element that was clicked
-  pick(event) {
-    console.log("Button clicked!", event.target)
+  // connects to the make draft pick button in the draft pick form
+  makePick(event) {
+    event.preventDefault()
+    console.log("makePick() called")
+    this.element.submit()
   }
 }
