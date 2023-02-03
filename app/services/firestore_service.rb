@@ -40,9 +40,17 @@ class FirestoreService
         document(id)
       end
 
-      # Returns Array of hashes representing the draft state
+      # Returns Array of hashes representing the draft state, with all keys as integers
       def state(id)
-        document(id)[:state]
+        document(id)[:state].deep_transform_keys { |k| k.to_s.to_i }
+      end
+
+      # Set pick within draft state by round and pick number
+      def set_pick!(opts)
+        state = state(opts[:draft_id])
+        pick = state[opts[:round]][opts[:pick_number] - 1]
+        pick[opts[:fantasy_team_id]] = opts[:player_id]
+        set_state!(opts[:draft_id], state)
       end
 
       # Sets the draft state for the given draft id

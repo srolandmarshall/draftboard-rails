@@ -9,6 +9,10 @@ class Draft < ApplicationRecord
     Player.not_drafted(id)
   end
 
+  def pick
+    { round: current_round, pick_number: current_pick }
+  end
+
   def reset!
     draft_picks.destroy_all
     @order_with_teams = nil # reset memoized var
@@ -30,7 +34,7 @@ class Draft < ApplicationRecord
   def generate_state
     order.each_with_object({}) do |round, state|
       state[round['round']] = round['order'].map do |team_id|
-        { "#{team_id}": draft_pick_lookup(fantasy_team_id: team_id, round: round['round']) }
+        { team_id => draft_pick_lookup(fantasy_team_id: team_id, round: round['round']) }
       end
     end
   end
@@ -92,13 +96,17 @@ class Draft < ApplicationRecord
     end
   end
 
-  def decrement_pick!
-    update(current_pick: current_pick - 1)
+  def make_pick!(draft_pick)
+    round = draft_pick.round
+    pick_number = draft_pick.pick_number
+    player_id = draft_pick.player_id
+    fantasy_team_id = draft_pick.fantasy_team_id
+    increment_pick! if pick == { round:, pick_number: }
+    FirestoreService::Drafts.set_pick!(draft_id: id, round:, pick_number:, player_id:, fantasy_team_id:)
   end
 
-  def make_pick(pick_number = current_pick)
-    set_firestore_state!
-    increment_pick! if pick_number.to_i == current_pick
+  def decrement_pick!
+    update(current_pick: current_pick - 1)
   end
 
   def undo_pick!
