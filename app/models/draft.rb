@@ -83,12 +83,12 @@ class Draft < ApplicationRecord
   end
 
   def increment_round!
-    current_round + 1 > roster_size ? update(current_round: 1) : end_draft!
+    current_round + 1 > roster_size ? end_draft! : update(current_round: current_round + 1)
   end
 
   def increment_pick!
     # add 1 to current_pick, unless it's the last pick of the round, then increment the round
-    if current_pick + 1 > roster_size
+    if current_pick + 1 > fantasy_teams.count
       increment_round!
       update(current_pick: 1) if active
     else
@@ -112,6 +112,10 @@ class Draft < ApplicationRecord
   def undo_pick!
     draft_picks.last.destroy
     decrement_pick!
+  end
+
+  def start_draft!
+    update(active: true)
   end
 
   def end_draft!
