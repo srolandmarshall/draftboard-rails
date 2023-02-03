@@ -11,32 +11,20 @@ class Draft < ApplicationRecord
 
   def reset!
     draft_picks.destroy_all
-    @order_with_teams = nil
+    @order_with_teams = nil # reset memoized var
     update(current_round: 1, current_pick: 1, order: generate_order)
-    order_with_teams # sets the memoized @order_with_teams
+    order_with_teams # sets the memoized var
+    set_firestore_state!
   end
 
-  # generates an array of hashes w/ `round` number and `order`, an array of fantasy team IDs representing the draft order
+  # generates, but does not set, a fresh order
+  # order is an array of hashes w/ `round` number and `order`, an array of fantasy team IDs representing the draft order
   def generate_order
-    order = fantasy_teams.shuffle.map(&:id)
+    o = fantasy_teams.shuffle.map(&:id)
     (1..roster_size).map do |i|
-      { 'round': i, 'order': i.odd? ? order : order.reverse }
+      { 'round': i, 'order': i.odd? ? o : o.reverse }
     end
   end
-
-  # generates a hash of hashes with the key being the round and the value being an array of hashes with the key being the team ID and the value being nil
-  # this is more friendly for use in js state
-  def initialize_state
-    (1..roster_size).map do |i|
-      { i => order.map { |team_id| { team_id => nil } } }
-    end
-  end
-
-  def reset_firestore_state!
-    FirestoreService.set_draft_state!(id, initialize_state)
-  end
-
-  def by_round; end
 
   # this creates an array similar to #initialize_state, but provides player ids if there is a DraftPick
   def generate_state
@@ -54,11 +42,11 @@ class Draft < ApplicationRecord
   end
 
   def set_firestore_state!
-    FirestoreService.set_draft_state!(id, generate_state)
+    FirestoreService::Drafts.set_state!(id, generate_state)
   end
 
   def firestore_state
-    FirestoreService.draft_state(id)
+    FirestoreService::Drafts.state(id)
   end
 
   def order_with_teams
@@ -108,16 +96,9 @@ class Draft < ApplicationRecord
     update(current_pick: current_pick - 1)
   end
 
-  def make_pick
+  def make_pick(pick_number = current_pick)
     set_firestore_state!
-    increment_pick!
-  end
-
-  # this is only to be used in console, probably should delete it
-  def make_pick!(player_id, fantasy_team_id = current_team.id, pick_number = current_pick)
-    draft_picks.create(pick_number:, player_id:, fantasy_team_id:)
-    set_firestore_state!
-    increment_pick!
+    increment_pick! if pick_number == current_pick
   end
 
   def undo_pick!
