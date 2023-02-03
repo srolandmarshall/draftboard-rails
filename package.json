@@ -9,6 +9,7 @@
     "bootstrap-icons": "^1.10.2",
     "esbuild": "^0.16.8",
     "esbuild-rails": "^1.0.3",
+    "firebase": "^9.16.0",
     "postcss": "^8.4.20",
     "sass": "^1.57.1",
     "stimulus-autocomplete": "^3.0.2"
