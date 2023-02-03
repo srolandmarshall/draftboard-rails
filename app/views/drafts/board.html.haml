@@ -1,5 +1,5 @@
 %h1.text-center #{@draft.title}
 %h2.text-center #{@draft.fantasy_league.name}
-%h3.text-center Current Pick: ##{@draft.current_pick} - #{@draft.current_team.name.titleize}
+%h3.text-center="Current Pick: ##{@draft.current_pick} - #{@draft.current_team.name.titleize}"
 
 = render partial: "drafts/table"
