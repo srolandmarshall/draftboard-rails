@@ -1,27 +1,55 @@
+#
+# Simple interface to Firestore database and commonly used data
+#
 class FirestoreService
   class << self
     def client
       @client ||= Google::Cloud::Firestore.new
     end
 
-    def drafts
-      client.col 'drafts'
+    # Returns Google::Cloud::Firestore::CollectionReference for the Players collection
+    # If you provide a league, the collection will be scoped to that league
+    # Otherwise, they will be returned nested under the league
+    def players(league = nil)
+      client.col "players#{"/#{league}" if league}"
     end
+  end
 
-    def draft_reference(id)
-      drafts.doc id
-    end
+  #
+  # Interface with the Drafts collection in Firebase
+  #
+  class Drafts
+    class << self
+      # Returns Google::Cloud::Firestore::CollectionReference for the Drafts collection
+      def all
+        FirestoreService.client.col 'drafts'
+      end
 
-    def draft_document(id)
-      draft_reference(id).get
-    end
+      # Returns Google::Cloud::Firestore::DocumentReference for the given draft id
+      def reference(id)
+        all.doc id
+      end
 
-    def draft_state(id)
-      draft_document(id)[:state]
-    end
+      # Returns Google::Cloud::Firestore::DocumentSnapshot for the given draft id
+      def document(id)
+        reference(id).get
+      end
 
-    def set_draft_state!(id, state)
-      draft_reference(id).set({ state: })
+      # Alias for #document
+      def snapshot(id)
+        document(id)
+      end
+
+      # Returns Array of hashes representing the draft state
+      def state(id)
+        document(id)[:state]
+      end
+
+      # Sets the draft state for the given draft id
+      # Returns Google::Cloud::Firestore::CommitResponse::WriteResult
+      def set_state!(id, state)
+        reference(id).set({ state: })
+      end
     end
   end
 end
